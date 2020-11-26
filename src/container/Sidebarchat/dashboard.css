@@ -1,0 +1,11 @@
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    /* overflow: none; */
+}
+
+.chat {
+    width: 80vw;
+    /* overflow: auto; */
+    scrollbar-width: none;
+}

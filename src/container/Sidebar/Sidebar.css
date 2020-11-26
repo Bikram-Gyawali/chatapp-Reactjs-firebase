@@ -1,0 +1,68 @@
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    overflow: none;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    border-right: 1px solid lightgray;
+}
+
+.sidebar-header-right {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    min-width: 10vw;
+}
+
+.sidebar-header-right>.MuiSvgIcon-root {
+    margin-right: 2vw;
+    font-size: 24px !important;
+}
+
+.sidebar-search {
+    display: flex;
+    align-items: center;
+    background-color: #f6f6f6;
+    height: 39px;
+    padding: 10px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    height: 35px;
+    border-radius: 20px;
+}
+
+.search-container>input {
+    border: none;
+    margin-left: 10px;
+}
+
+.search-container>.MuiSvgIcon-root {
+    color: gray;
+    padding: 10px;
+    font-size: 45px !important;
+}
+
+.sidebar-chats {
+    background-color: rgb(255, 255, 255);
+    flex: 1;
+    max-height: 75vh;
+    overflow: auto;
+}
+
+.sidebar-chats>div {
+    height: 100px;
+}
+
+.sidebar-chats>div:hover {
+    background-color: rgb(212, 209, 209);
+    transition: 0.4s all;
+}
