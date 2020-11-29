@@ -6,7 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login } = useAuth();
+  const { login, googleSignIn } = useAuth();
   const [error, setError] = useState("");
   const [valid, setValid] = useState(false);
   const history = useHistory();
@@ -26,7 +26,7 @@ function Login() {
   }
 
   return (
-    <div>
+    <div style={{ minWidth: "400px", margin: "10vh 35vw" }}>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>
@@ -49,6 +49,20 @@ function Login() {
               Log In
             </Button>
           </Form>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              googleSignIn()
+                .then((result) => {
+                  history.push("/");
+                })
+                .catch((error) => alert(error.message));
+            }}
+            className="w-100 btn btn-danger mt-2"
+            type="submit"
+          >
+            Google
+          </Button>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">

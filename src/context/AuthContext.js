@@ -1,27 +1,27 @@
-import React, { useContext, useState, useEffect } from "react";
-import { auth } from "../firebase";
+import React, { useContext, useState, useEffect, useReducer } from "react";
+import { auths, gauth } from "../firebase";
 const AuthContext = React.createContext();
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-export function AuthProvider({ children }) {
+export function AuthProvider({ reducer, initialState, children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
   function signup(email, password) {
-    return auth.createUserWithEmailAndPassword(email, password);
+    return auths.createUserWithEmailAndPassword(email, password);
   }
 
   function login(email, password) {
-    return auth.signInWithEmailAndPassword(email, password);
+    return auths.signInWithEmailAndPassword(email, password);
   }
   function logout() {
-    return auth.signOut();
+    return auths.signOut();
   }
   function resetPass(email) {
-    return auth.sendPasswordResetEmail(email);
+    return auths.sendPasswordResetEmail(email);
   }
   function updateEmail(email) {
     return currentUser.updateEmail(email);
@@ -31,14 +31,17 @@ export function AuthProvider({ children }) {
     return currentUser.updatePassword(password);
   }
 
+  function googleSignIn() {
+    return auths.signInWithPopup(gauth);
+  }
+
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auths.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setLoading(false);
     });
     return unsubscribe;
   }, []);
-
   const value = {
     currentUser,
     login,
@@ -47,10 +50,14 @@ export function AuthProvider({ children }) {
     resetPass,
     updateEmail,
     updatePass,
+    googleSignIn,
   };
   return (
     <div>
-      <AuthContext.Provider value={value}>
+      <AuthContext.Provider
+        value={value}
+        reducers={useReducer(reducer, initialState)}
+      >
         {!loading && children}
       </AuthContext.Provider>
     </div>

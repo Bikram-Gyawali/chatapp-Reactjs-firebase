@@ -7,11 +7,12 @@ function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup } = useAuth();
+  const { signup, googleSignIn } = useAuth();
   const [error, setError] = useState("");
   const [valid, setValid] = useState(false);
   const history = useHistory();
-
+  const [userInfo, setuserInfo] = useState();
+  const [userName, setUserName] = useState();
   async function handleSubmit(e) {
     e.preventDefault();
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
@@ -22,14 +23,26 @@ function Signup() {
       setValid(true);
       await signup(emailRef.current.value, passwordRef.current.value);
       history.push("/");
+      // console.log(signup);
     } catch {
       setError("Failed to create an account");
     }
     setValid(false);
   }
-
+  // const signIn = async () => {
+  //   await googleSignIn()
+  //     .then((result) => {
+  //       // setuserInfo(result);
+  //       // setUserName(result.user.displayName);
+  //       history.push("/");
+  //       console.log(result);
+  //     })
+  //     .catch((error) => alert(error.message));
+  //   setValid(false);
+  // };
+  // console.log(userInfo);
   return (
-    <div>
+    <div style={{ minWidth: "400px", margin: "10vh 35vw" }}>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
@@ -51,10 +64,28 @@ function Signup() {
               Sign Up
             </Button>
           </Form>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              googleSignIn()
+                .then((result) => {
+                  setuserInfo(result);
+                  setUserName(result.user.displayName);
+                  history.push("/");
+                  console.log(result);
+                })
+                .catch((error) => alert(error.message));
+            }}
+            disabled={valid}
+            className="w-100 btn btn-danger mt-2"
+            type="submit"
+          >
+            Google
+          </Button>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        ALready have an account ?<Link to="/login">Log In</Link>
+        Already have an account ?<Link to="/login">Log In</Link>
       </div>
     </div>
   );

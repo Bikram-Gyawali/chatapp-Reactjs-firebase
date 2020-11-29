@@ -39,5 +39,16 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 </body>
+<script>
+    const scrollBottom = () => {
+        document.getElementsByClassName("chat-box").scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+            inline: "nearest",
+        });
+    };
+</script>
+<script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-firestore.js"></script>
 
 </html>

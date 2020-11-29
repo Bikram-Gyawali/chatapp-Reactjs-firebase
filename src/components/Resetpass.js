@@ -26,7 +26,7 @@ function Resetpass() {
   }
 
   return (
-    <div>
+    <div style={{ minWidth: "400px", margin: "10vh 35vw" }}>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Reset Pass</h2>

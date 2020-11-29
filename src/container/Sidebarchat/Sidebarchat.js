@@ -1,16 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { Avatar } from "@material-ui/core";
 import "./Sidebarchat.css";
-function Sidebarchat({ addNewChat }) {
+import app from "../../firebase";
+import { Link, useParams } from "react-router-dom";
+function Sidebarchat({ addNewChat, id, name }) {
   const [seed, setSeed] = useState("");
+  const { roomId } = useParams();
+  const [roomName, setRoomName] = useState("");
+  const [messages, setMessages] = useState([]);
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 5000));
   }, []);
   const newChat = () => {
-    const roomName = prompt("Please enter name for chat.");
+    let roomName = prompt("Please enter name for chat.");
     if (roomName) {
+      app.firestore().collection("rooms").add({
+        name: roomName,
+      });
     }
   };
+
+  useEffect(() => {
+    if (roomId) {
+      app
+        .firestore()
+        .collection("rooms")
+        .doc(roomId)
+        .onSnapshot((snapshot) => setRoomName(snapshot.data().name));
+
+      app
+        .firestore()
+        .collection("rooms")
+        .doc(roomId)
+        .collection("messages")
+        .orderBy("timestamp", "dsc")
+        .onSnapshot((snapshot) =>
+          setMessages(snapshot.docs.map((doc) => doc.data()))
+        );
+    }
+  }, [roomId]);
+
   return addNewChat ? (
     <div>
       <div onClick={newChat} className="sidebarchat">
@@ -18,13 +47,15 @@ function Sidebarchat({ addNewChat }) {
       </div>
     </div>
   ) : (
-    <div className="sidebar-chat">
-      <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
-      <div className="sidebar-chatinfo">
-        <h2>Room Name</h2>
-        <p>last seen msg...</p>
+    <Link to={`/dashboard/${id}`}>
+      <div className="sidebar-chat">
+        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+        <div className="sidebar-chatinfo">
+          <h2>{name}</h2>
+          {/* <p>{messages[0]?.message}</p> */}
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

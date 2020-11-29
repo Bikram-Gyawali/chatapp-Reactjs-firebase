@@ -36,41 +36,69 @@
 }
 
 .chat-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     flex: 1;
     background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
     background-repeat: repeat;
     background-position: center;
-    padding: 30px;
+    padding: 20px;
     overflow: scroll;
 }
 
 .chat-message {
-    position: relative;
-    font-size: 16px;
-    padding: 10px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    width: fit-content;
-    margin-bottom: 3px;
+    margin-top: 10px;
+    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 30px;
+    background-color: rgba(243, 72, 29, 0.836);
     color: black;
+    font-size: 13px;
+    font-family: monospace;
+    border-radius: 10px;
+    padding: 5px;
+    font-weight: bolder;
+    max-width: 80%;
+    align-items: flex-start;
 }
+
+
+/* {new Date(
+    messages[messages.length - 1]?.timestamp?.toDate()
+  ).toUTCString()} */
 
 .chat-receiver {
-    margin-left: auto;
+    margin-top: 10px;
+    float: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+    margin-right: 30px;
+    background-color: rgba(79, 151, 20, 0.836);
     color: black;
-    background-color: rgb(132, 233, 102);
-}
-
-.chat-name {
-    position: absolute;
-    top: -15px;
-    font-weight: 800;
-    font-size: xx-small;
+    font-size: 13px;
+    font-family: monospace;
+    border-radius: 10px;
+    padding: 5px;
+    font-weight: bolder;
+    max-width: 80%;
+    text-align: left;
+    align-items: flex-end;
 }
 
 .timestamp {
-    margin-left: 10px;
     font-size: xx-small;
+    color: rgb(248, 248, 248);
+    font-weight: bold;
+}
+
+.timestamp-left {
+    font-size: xx-small;
+    color: rgb(248, 248, 248);
+    font-weight: bold;
 }
 
 .chat-footer {
