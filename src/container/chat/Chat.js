@@ -22,18 +22,10 @@ function Chat() {
   const [roomName, setRoomName] = useState("");
   const [messages, setMessages] = useState([]);
   const scrollBottom = useRef();
-  const [scrollHt, setScrollHt] = useState();
 
   const enableScroll = () => {
     scrollBottom.current.scrollTop = scrollBottom.current.scrollTopMax;
   };
-
-  // console.log(currentUser);
-
-  // const scrollToEnd = () => {
-  //   let container = document.querySelector(".chat-box");
-  //   let scrollHeight = container.scrollHeight();
-  // };
 
   useEffect(() => {
     if (roomId) {
@@ -61,7 +53,7 @@ function Chat() {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log("you typed>>", input);
+    // console.log("you typed>>", input);
 
     app.firestore().collection("rooms").doc(roomId).collection("messages").add({
       message: input,
@@ -73,15 +65,18 @@ function Chat() {
   const down = () => {
     scrollBottom.current.scrollTop = scrollBottom.current.scrollTopMax;
   };
-  console.log(scrollHt);
-  console.log(scrollBottom.current);
   return (
     <div className="chat-body">
       <div className="chat-header">
         <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
         <div className="chat-header-info">
           <h4>{roomName}</h4>
-          {/* <p>{timestamp}</p> */}
+          <p>
+            last seen ..
+            {new Date(
+              messages[messages.length - 1]?.timestamp?.toDate()
+            ).toUTCString()}
+          </p>
         </div>
         <div className="chat-headerRight">
           <IconButton>
@@ -126,6 +121,7 @@ function Chat() {
           <AttachFile />
         </IconButton>
         <form
+          required
           onSubmit={(e) => {
             e.preventDefault();
             sendMessage(e);
@@ -148,7 +144,6 @@ function Chat() {
               e.preventDefault();
               setInput("");
               sendMessage(e);
-              down();
             }}
           >
             <SendIcon />
