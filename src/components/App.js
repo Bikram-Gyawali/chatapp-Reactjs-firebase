@@ -7,8 +7,7 @@ import Login from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import Resetpass from "./Resetpass";
 import Update from "./Update";
-import Sidebar from "../container/Sidebar/Sidebar";
-import Chat from "../container/chat/Chat";
+
 function App() {
   return (
     <div>

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useCallBack } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Chat.css";
 import app from "../../firebase";
 import firebase from "firebase";
-
+import Picker from "emoji-picker-react";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Avatar, IconButton } from "@material-ui/core";
 import {
   AttachFile,
@@ -15,16 +16,18 @@ import SendIcon from "@material-ui/icons/Send";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 function Chat() {
+  const scrollBottom = useRef();
   const { currentUser } = useAuth();
   const [input, setInput] = useState();
   const [seed, setSeed] = useState("");
   const { roomId } = useParams();
   const [roomName, setRoomName] = useState("");
   const [messages, setMessages] = useState([]);
-  const scrollBottom = useRef();
-
-  const enableScroll = () => {
-    scrollBottom.current.scrollTop = scrollBottom.current.scrollTopMax;
+  const [chosenEmoji, setChosenEmoji] = useState();
+  const onEmojiClick = (event, emojiObject) => {
+    setChosenEmoji(emojiObject.emoji);
+    console.log(chosenEmoji);
+    setInput(emojiObject.emoji);
   };
 
   useEffect(() => {
@@ -65,6 +68,28 @@ function Chat() {
   const down = () => {
     scrollBottom.current.scrollTop = scrollBottom.current.scrollTopMax;
   };
+
+  const Emojis = () => (
+    <OverlayTrigger
+      trigger="click"
+      placement="top"
+      overlay={popover}
+      delay={{ show: 100, hide: 100 }}
+    >
+      <IconButton>
+        <InsertEmoticon />
+      </IconButton>
+    </OverlayTrigger>
+  );
+
+  const popover = (
+    <Popover style={{ width: "500px" }}>
+      <Popover.Content>
+        <Picker onEmojiClick={onEmojiClick} disableAutoFocus={true} />
+      </Popover.Content>
+    </Popover>
+  );
+
   return (
     <div className="chat-body">
       <div className="chat-header">
@@ -91,7 +116,11 @@ function Chat() {
 
       <div ref={scrollBottom} className="chat-box">
         {messages.map((message) => (
-          <div>
+          <div
+          // className={
+          //   message.message == chosenEmoji ? "forEmoji" : "forMessage"
+          // }
+          >
             <p
               className={
                 message.name !== currentUser.displayName
@@ -105,7 +134,7 @@ function Chat() {
               >
                 {message.name}
               </small>
-              <p>{message.message}</p>
+              <p style={{ fontSize: "20px" }}>{message.message}</p>
               <small className={"timestamp"}>
                 {new Date(message.timestamp?.toDate()).toUTCString()}
               </small>
@@ -113,10 +142,12 @@ function Chat() {
           </div>
         ))}
       </div>
+
       <div className="chat-footer">
-        <IconButton>
+        {/* <IconButton>
           <InsertEmoticon />
-        </IconButton>
+        </IconButton> */}
+        <Emojis />
         <IconButton>
           <AttachFile />
         </IconButton>
@@ -134,7 +165,6 @@ function Chat() {
               setInput(e.target.value);
               down();
             }}
-            // onLoad={enableScroll()}
             placeholder="type a message"
             type="text"
           />
