@@ -53,18 +53,30 @@ function Sidebarchat({ addNewChat, id, name }) {
     }
   }, [roomId]);
   return addNewChat ? (
-    <div>
-      <div onClick={newChat} className="sidebarchat">
-        <h2>New chat here</h2>
-      </div>
+    <div onClick={newChat} className="sidebarchat">
+      <h2
+        style={{
+          padding: "30px 30px",
+          color: "teal",
+          fontSize: "25px",
+          fontWeight: "bold",
+        }}
+      >
+        New chat here
+      </h2>
     </div>
   ) : (
-    <Link to={`/dashboard/${id}`} style={{ textDecoration: "none" }}>
+    <Link
+      to={`/dashboard/${id}`}
+      style={{ textDecoration: "none", maxWidth: "300px", maxHeight: "80px" }}
+    >
       <div className="sidebar-chat">
         <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
         <div className="sidebar-chatinfo">
           <h2 style={{ fontWeight: "bold", fontSize: "20px" }}>{name}</h2>
-          <p>{messages[0]?.message}</p>
+          <p style={{ maxWidth: "200px", maxHeight: "30px" }}>
+            {messages[0]?.message}
+          </p>
         </div>
       </div>
     </Link>

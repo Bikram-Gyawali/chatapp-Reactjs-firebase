@@ -23,12 +23,11 @@ function Chat() {
   const { roomId } = useParams();
   const [roomName, setRoomName] = useState("");
   const [messages, setMessages] = useState([]);
-  const [chosenEmoji, setChosenEmoji] = useState();
   const onEmojiClick = (event, emojiObject) => {
-    setChosenEmoji(emojiObject.emoji);
-    console.log(chosenEmoji);
-    setInput(emojiObject.emoji);
+    // setChosenEmoji(emojiObject.emoji);
+    setInput(input + emojiObject.emoji);
   };
+  console.log(currentUser.photoURL);
 
   useEffect(() => {
     if (roomId) {
@@ -61,12 +60,15 @@ function Chat() {
     app.firestore().collection("rooms").doc(roomId).collection("messages").add({
       message: input,
       name: currentUser.displayName,
+      photoURL: currentUser.photoURL,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
   };
 
   const down = () => {
-    scrollBottom.current.scrollTop = scrollBottom.current.scrollTopMax;
+    scrollBottom.current.scrollTop =
+      scrollBottom.current.scrollTopMax || scrollBottom.current.scrollHeight;
+    // scrollBottom.current.scrollHeight;
   };
 
   const Emojis = () => (
@@ -116,11 +118,12 @@ function Chat() {
 
       <div ref={scrollBottom} className="chat-box">
         {messages.map((message) => (
-          <div
-          // className={
-          //   message.message == chosenEmoji ? "forEmoji" : "forMessage"
-          // }
-          >
+          <div>
+            <iframe
+              title="none"
+              style={{ display: "none" }}
+              onload={down()}
+            ></iframe>
             <p
               className={
                 message.name !== currentUser.displayName
@@ -128,13 +131,30 @@ function Chat() {
                   : "chat-receiver"
               }
             >
+              <Avatar
+                className={
+                  message.name !== currentUser.displayName
+                    ? "avatar-left"
+                    : "avatar-right"
+                }
+                src={message.photoURL}
+              />
+
               <small
                 id="small"
-                style={{ fontSize: "10px", top: "-20px", position: "relative" }}
+                style={{ fontSize: "10px", top: "-60px", position: "relative" }}
               >
                 {message.name}
               </small>
-              <p style={{ fontSize: "20px" }}>{message.message}</p>
+              <p
+                className={
+                  /[a-zA-z0-9]/.test(message.message)
+                    ? "forMessage"
+                    : "forEmoji"
+                }
+              >
+                {message.message}
+              </p>
               <small className={"timestamp"}>
                 {new Date(message.timestamp?.toDate()).toUTCString()}
               </small>

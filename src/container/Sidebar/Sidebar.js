@@ -7,6 +7,8 @@ import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { SearchOutlined } from "@material-ui/icons";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import Sidebarchat from "../Sidebarchat/Sidebarchat";
 import LockIcon from "@material-ui/icons/Lock";
 import { useHistory } from "react-router-dom";
@@ -16,6 +18,15 @@ function Sidebar() {
   const [error, setError] = useState("");
   const history = useHistory();
   const { logout, currentUser } = useAuth();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   async function logOut() {
     setError("");
@@ -57,12 +68,29 @@ function Sidebar() {
             <ChatIcon />
           </IconButton>
           <IconButton>
-            <MoreVertIcon />
+            <MoreVertIcon
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleClick}
+            />
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              style={{ top: "50px" }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={logout}>
+                <LockIcon />
+                Logout
+              </MenuItem>
+            </Menu>
           </IconButton>
 
-          <IconButton onClick={logOut}>
-            <LockIcon />
-          </IconButton>
+          <IconButton onClick={logOut}></IconButton>
           {error && <Alert variant="danger">{error} </Alert>}
         </div>
       </div>

@@ -52,7 +52,7 @@
     float: left;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-around;
     margin-left: 30px;
     background-color: rgba(243, 72, 29, 0.836);
     color: black;
@@ -62,7 +62,6 @@
     padding: 5px;
     font-weight: bolder;
     max-width: 80%;
-    align-items: flex-start;
 }
 
 .chat-receiver {
@@ -70,7 +69,7 @@
     float: right;
     display: flex;
     flex-direction: column;
-    justify-content: baseline;
+    justify-content: space-around;
     margin-right: 30px;
     background-color: rgba(91, 160, 35, 0.836);
     color: black;
@@ -122,6 +121,22 @@
 }
 
 .forEmoji {
-    background-color: inherit !important;
-    font-size: 30px !important;
+    background-color: none !important;
+    font-size: 35px !important;
+}
+
+.forMessage {
+    border-radius: 10px;
+    max-width: 100%;
+    word-wrap: break-word;
+    text-overflow: clip;
+    margin: -50px 0px 5px 0px;
+}
+
+.avatar-left {
+    right: 50px !important;
+}
+
+.avatar-right {
+    left: 50px !important;
 }
